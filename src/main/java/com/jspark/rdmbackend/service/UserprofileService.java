@@ -20,20 +20,34 @@ public class UserprofileService {
         return userprofileRepository.findAll();
     }
 
+    public Optional<Userprofile> getUserprofileByUserId(String userId){
+        return userprofileRepository.findByUserId(userId);
+    }
+
     public Optional<Userprofile> getUserprofileByUserName(String userName) {
         return userprofileRepository.findByUserName(userName);
     }
 
     public Userprofile createUserprofile(UserprofileDto userDto) {
         Userprofile user = new Userprofile();
+        user.setUserId(userDto.getUserId());
         user.setUserName(userDto.getUserName());
+        user.setUserGroupName(userDto.getUserGroupName());
         user.setPassword(userDto.getPassword());
-        user.setUserType(userDto.getUserType());
+        user.setDepartment(userDto.getDepartment());
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setEmail(userDto.getEmail());
+        user.setLocaleName(userDto.getLocaleName());
+        user.setLastLoginTime(userDto.getLastLoginTime());
+        user.setLastPasswordTime(userDto.getLastPasswordTime());
+        user.setValidFlag(userDto.getValidFlag());
+        user.setFmbDefaultFactoryName(userDto.getFmbDefaultFactoryName());
+        user.setLastEventComment(userDto.getLastEventComment());
         return userprofileRepository.save(user);
     }
 
     public boolean loginUserprofile(UserprofileDto userDto) {
-        return this.getUserprofileByUserName(userDto.getUserName())
+        return this.getUserprofileByUserId(userDto.getUserId())
                 .map(user-> checkpassword(user.getPassword(),userDto.getPassword()))
                 .orElse(false);
     }
