@@ -26,7 +26,8 @@ public class StateController {
     public ResponseEntity<State> changeState(@RequestBody StateDto stateDto) {
         State state = new State();
         state.setObjectName(stateDto.getObjectName());
-        state.setObjectState(stateDto.getObjectState());
+        state.setStateName(stateDto.getStateName());
+        state.setStateValue(stateDto.getStateValue());
         messagingTemplate.convertAndSend("/topic/state",stateDto);
         return ResponseEntity.ok(state);
     }

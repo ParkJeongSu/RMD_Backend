@@ -13,5 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class State {
     private String objectName;
-    private String objectState;
+    private String stateName;
+    private String stateValue;
 }
