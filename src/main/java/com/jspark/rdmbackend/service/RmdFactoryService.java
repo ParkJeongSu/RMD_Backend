@@ -49,7 +49,7 @@ public class RmdFactoryService {
                     .forEach(
                             rmdFactory -> {
                                 String defaultFlag = "N";
-                                if(rmdFactory.equals(rmdFactoryDto.getFactoryName()))
+                                if(rmdFactory.getFactoryName().equals(rmdFactoryDto.getFactoryName()))
                                 {
                                     defaultFlag = "Y";
                                 }
