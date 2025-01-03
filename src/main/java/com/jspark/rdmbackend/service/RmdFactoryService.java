@@ -45,7 +45,7 @@ public class RmdFactoryService {
         List<RmdFactory> rmdFactoryList = rmdFactoryRepository.findAll();
 
         try {
-            rmdFactoryList.stream()
+            rmdFactoryList
                     .forEach(
                             rmdFactory -> {
                                 String defaultFlag = "N";

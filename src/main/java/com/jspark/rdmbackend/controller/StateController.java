@@ -2,33 +2,34 @@ package com.jspark.rdmbackend.controller;
 
 
 import com.jspark.rdmbackend.dto.StateDto;
-import com.jspark.rdmbackend.dto.UserprofileDto;
 import com.jspark.rdmbackend.entity.State;
+import com.jspark.rdmbackend.service.StateService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/state")
 public class StateController {
 
     private final SimpMessagingTemplate messagingTemplate;
+    private final StateService stateService;
 
-    public StateController(SimpMessagingTemplate messagingTemplate) {
+    public StateController(SimpMessagingTemplate messagingTemplate,StateService stateService) {
         this.messagingTemplate = messagingTemplate;
+        this.stateService = stateService;
     }
 
     @PostMapping("/change")
-    public ResponseEntity<State> changeState(@RequestBody StateDto stateDto) {
-        State state = new State();
-        state.setObjectName(stateDto.getObjectName());
-        state.setStateName(stateDto.getStateName());
-        state.setStateValue(stateDto.getStateValue());
+    public ResponseEntity<StateDto> changeState(@RequestBody StateDto stateDto) {
         messagingTemplate.convertAndSend("/topic/state",stateDto);
-        return ResponseEntity.ok(state);
+        return ResponseEntity.ok(stateDto);
+    }
+
+    @GetMapping
+    public List<StateDto> getAllState(){
+        return stateService.getAllState();
     }
 }
