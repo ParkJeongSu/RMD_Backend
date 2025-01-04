@@ -1,5 +1,6 @@
 package com.jspark.rdmbackend.controller;
 
+import com.jspark.rdmbackend.Util.JwtUtil;
 import com.jspark.rdmbackend.dto.UserprofileDto;
 import com.jspark.rdmbackend.entity.Userprofile;
 import com.jspark.rdmbackend.service.UserprofileService;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -37,12 +39,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUserprofile(@RequestBody UserprofileDto userDto) {
+    public ResponseEntity<?> loginUserprofile(@RequestBody UserprofileDto userDto) {
         boolean authenticated = userprofileService.loginUserprofile(userDto);
+        // 추후 login Service로 넣기
+        String token = JwtUtil.generateToken(userDto.getUserId());
 
         if(authenticated)
         {
-            return ResponseEntity.ok("LoginSuccessful");
+            return ResponseEntity.ok().body(Map.of("token",token));
         }
         else
         {

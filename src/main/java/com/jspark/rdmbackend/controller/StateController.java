@@ -37,7 +37,7 @@ public class StateController {
         for(int i=0;i<1000;i++)
         {
             try {
-                Thread.sleep(200); // 2000 밀리초 = 2초
+                Thread.sleep(400); // 2000 밀리초 = 2초
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
