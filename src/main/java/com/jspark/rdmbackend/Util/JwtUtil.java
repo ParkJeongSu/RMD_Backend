@@ -7,14 +7,15 @@ import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
-    private static Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);  // 안전한 키 생성
+    private static final String SECRET_KEY = "mySecretKeyForJwtToken1234567890";
+    private static final Key secretKey = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
     public static String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 //.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))  // 1시간 유효
-                .signWith(secretKey)
+                .signWith(secretKey, SignatureAlgorithm.HS256)  // 최신 방식
                 .compact();
     }
 
@@ -30,8 +31,6 @@ public class JwtUtil {
         try {
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
             return true;
-        } catch (SignatureException e) {
-            System.out.println("서명이 유효하지 않음");
         } catch (ExpiredJwtException e) {
             System.out.println("토큰이 만료됨");
         } catch (MalformedJwtException e) {
