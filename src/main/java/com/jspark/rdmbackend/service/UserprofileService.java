@@ -1,4 +1,5 @@
 package com.jspark.rdmbackend.service;
+import com.jspark.rdmbackend.Util.JwtUtil;
 import com.jspark.rdmbackend.entity.Userprofile;
 import com.jspark.rdmbackend.dto.UserprofileDto;
 import com.jspark.rdmbackend.repository.UserprofileRepository;
@@ -46,13 +47,22 @@ public class UserprofileService {
         return userprofileRepository.save(user);
     }
 
-    public boolean loginUserprofile(UserprofileDto userDto) {
-        return this.getUserprofileByUserId(userDto.getUserId())
-                .map(user-> checkpassword(user.getPassword(),userDto.getPassword()))
+    public String loginUserprofile(UserprofileDto userDto) {
+
+        String token = "";
+        boolean loginSuccessFlag = this.getUserprofileByUserId(userDto.getUserId())
+                .map(user-> checkPassword(user.getPassword(),userDto.getPassword()))
                 .orElse(false);
+
+        if(loginSuccessFlag)
+        {
+            token = JwtUtil.generateToken(userDto.getUserId());
+        }
+
+        return token;
     }
 
-    private boolean checkpassword(String userPasswordData, String sendPassword){
+    private boolean checkPassword(String userPasswordData, String sendPassword){
         return userPasswordData.equals(sendPassword);
     }
 

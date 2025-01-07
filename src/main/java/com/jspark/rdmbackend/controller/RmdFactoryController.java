@@ -30,11 +30,6 @@ public class RmdFactoryController {
         factories.sort(Comparator.comparing(RmdFactory::getPosition));
         return factories;
     }
-//    생성하는 것은 FileUpload Controller 에서 같이 수행
-//    @PostMapping
-//    public Userprofile createUserprofile(@RequestBody UserprofileDto userDto) {
-//        return userprofileService.createUserprofile(userDto);
-//    }
 
     @PostMapping("/update")
     public ResponseEntity<String> updateRmdFactory(@RequestBody RmdFactoryDto rmdFactoryDto) {
@@ -47,7 +42,7 @@ public class RmdFactoryController {
         }
         else
         {
-            return ResponseEntity.status(409).body("updatefail");
+            return ResponseEntity.status(409).body("updateFail");
         }
     }
 
@@ -61,7 +56,7 @@ public class RmdFactoryController {
         }
         else
         {
-            return ResponseEntity.status(409).body("deletefail");
+            return ResponseEntity.status(409).body("deleteFail");
         }
     }
 }

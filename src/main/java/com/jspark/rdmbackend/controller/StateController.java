@@ -2,7 +2,6 @@ package com.jspark.rdmbackend.controller;
 
 
 import com.jspark.rdmbackend.dto.StateDto;
-import com.jspark.rdmbackend.entity.State;
 import com.jspark.rdmbackend.service.StateService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

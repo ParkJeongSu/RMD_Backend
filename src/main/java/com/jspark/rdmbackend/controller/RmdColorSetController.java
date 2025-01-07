@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/rmdcolorset")
 public class RmdColorSetController {
-    private RmdColorSetService rmdColorSetService;
+    private final RmdColorSetService rmdColorSetService;
 
     public RmdColorSetController(RmdColorSetService rmdColorSetService) {
         this.rmdColorSetService = rmdColorSetService;
@@ -25,7 +25,6 @@ public class RmdColorSetController {
 
     @GetMapping
     public List<RmdColorSetDto> getAllrmdColorSetList() {
-        List<RmdColorSetDto> rmdColorSetDtoList = rmdColorSetService.getAllRmdColorSet();
-        return rmdColorSetDtoList;
+        return rmdColorSetService.getAllRmdColorSet();
     }
 }

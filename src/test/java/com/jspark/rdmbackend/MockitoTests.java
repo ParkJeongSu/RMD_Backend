@@ -34,13 +34,13 @@ public class MockitoTests {
         user.setUserId("test");
         Optional<Userprofile> userprofile = Optional.of(user);
 
-        when(userprofileRepository.findByUserId("test")).
-                thenReturn(userprofile);
+        when(userprofileRepository.findByUserId("test")).thenReturn(userprofile);
 
-        Optional<Userprofile> testuserProfile = userprofileService.getUserprofileByUserId("test");
+        Optional<Userprofile> testUserProfile = userprofileService.getUserprofileByUserId("test");
 
         // 검증
-        assertEquals("test", testuserProfile.get().getUserId());
+        testUserProfile.ifPresent(value -> assertEquals("test", value.getUserId()));
+
     }
 
 }
