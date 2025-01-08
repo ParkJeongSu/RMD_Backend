@@ -29,6 +29,7 @@ public class RmdFactoryService {
         return rmdFactoryRepository.save(rmdFactory);
     }
 
+    @Transactional
     public boolean deleteRmdFactory(RmdFactoryDto rmdFactoryDto){
         try {
             rmdFactoryRepository.deleteByFactoryName(rmdFactoryDto.getFactoryName());

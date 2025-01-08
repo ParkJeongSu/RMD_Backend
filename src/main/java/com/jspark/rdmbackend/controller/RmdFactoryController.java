@@ -47,7 +47,7 @@ public class RmdFactoryController {
     }
 
     @DeleteMapping
-    public ResponseEntity<String> getUserById(@RequestBody RmdFactoryDto rmdFactoryDto) {
+    public ResponseEntity<String> deleteRMDFactory(@RequestBody RmdFactoryDto rmdFactoryDto) {
 
         boolean deleteSuccess = rmdFactoryService.deleteRmdFactory(rmdFactoryDto);
         if(deleteSuccess)
