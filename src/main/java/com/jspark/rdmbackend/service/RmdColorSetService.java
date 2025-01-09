@@ -1,6 +1,7 @@
 package com.jspark.rdmbackend.service;
 
 
+import com.jspark.rdmbackend.dto.ReplyDto;
 import com.jspark.rdmbackend.dto.RmdColorSetDto;
 import com.jspark.rdmbackend.dto.RmdFactoryDto;
 import com.jspark.rdmbackend.entity.RmdColorSet;
@@ -8,6 +9,7 @@ import com.jspark.rdmbackend.entity.RmdColorSetKey;
 import com.jspark.rdmbackend.entity.RmdFactory;
 import com.jspark.rdmbackend.repository.RmdColorSetRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -23,13 +25,13 @@ public class RmdColorSetService {
         this.rmdColorSetRepository = rmdColorSetRepository;
     }
 
-    public List<RmdColorSetDto> getAllRmdColorSet() {
+    public ReplyDto<List<RmdColorSetDto>> getAllRmdColorSet() {
         List<RmdColorSet> rmdColorSetList = rmdColorSetRepository.findAll();
         rmdColorSetList.sort(Comparator.comparing((RmdColorSet r) -> r.getKey().getTypeName()));
 
         List<RmdColorSetDto> rmdColorSetDtoList = new ArrayList<>();
 
-        rmdColorSetList.stream().forEach(data ->{
+        rmdColorSetList.forEach(data ->{
             RmdColorSetDto dto = new RmdColorSetDto();
             dto.setTypeName(data.getKey().getTypeName());
             dto.setStateName(data.getKey().getStateName());
@@ -38,11 +40,14 @@ public class RmdColorSetService {
             dto.setTypeAttributeValue(data.getTypeAttributeValue());
             rmdColorSetDtoList.add(dto);
         });
+        ReplyDto<List<RmdColorSetDto>> reply = new ReplyDto<>();
+        reply.setSuccess(true);
+        reply.setData(rmdColorSetDtoList);
 
-        return rmdColorSetDtoList;
+        return reply;
     }
-
-    public RmdColorSet createRmdColorSet(RmdColorSetDto rmdColorSetDto) {
+    @Transactional
+    public ReplyDto<RmdColorSetDto> createRmdColorSet(RmdColorSetDto rmdColorSetDto) {
         RmdColorSetKey key = new RmdColorSetKey();
         key.setTypeName(rmdColorSetDto.getTypeName());
         key.setStateName(rmdColorSetDto.getStateName());
@@ -51,10 +56,15 @@ public class RmdColorSetService {
         RmdColorSet rmdColorSet = new RmdColorSet();
         rmdColorSet.setKey(key);
         rmdColorSet.setTypeAttributeValue(rmdColorSet.getTypeAttributeValue());
-        return rmdColorSetRepository.save(rmdColorSet);
+        RmdColorSet result = rmdColorSetRepository.save(rmdColorSet);
+        ReplyDto<RmdColorSetDto> reply = new ReplyDto<>();
+        reply.setSuccess(true);
+        reply.setData(rmdColorSetDto);
+        return reply;
     }
 
-    public RmdColorSet updateRmdColorSet(RmdColorSetDto rmdColorSetDto)
+    @Transactional
+    public ReplyDto<RmdColorSetDto> updateRmdColorSet(RmdColorSetDto rmdColorSetDto)
     {
         RmdColorSetKey key = new RmdColorSetKey();
         key.setTypeName(rmdColorSetDto.getTypeName());
@@ -66,23 +76,25 @@ public class RmdColorSetService {
                     data.setTypeAttributeValue(rmdColorSetDto.getTypeAttributeValue());
                     return data;
                     }).orElseThrow(()-> new RuntimeException("RmdColorSet not found"));
-        return rmdColorSetRepository.save(rmdColorSet);
+        rmdColorSetRepository.save(rmdColorSet);
+        ReplyDto<RmdColorSetDto> reply = new ReplyDto<>();
+        reply.setSuccess(true);
+        reply.setData(rmdColorSetDto);
+        return reply;
     }
 
-    public boolean deleteRmdFactory(RmdColorSetDto rmdColorSetDto){
-        try {
-            RmdColorSetKey key = new RmdColorSetKey();
-            key.setTypeName(rmdColorSetDto.getTypeName());
-            key.setStateName(rmdColorSetDto.getStateName());
-            if(rmdColorSetRepository.existsById(key))
-            {
-                rmdColorSetRepository.deleteById(key);
-            }
-            return true;
-        }
-        catch (Exception e)
+    @Transactional
+    public ReplyDto<RmdColorSetDto> deleteRmdFactory(RmdColorSetDto rmdColorSetDto){
+        RmdColorSetKey key = new RmdColorSetKey();
+        key.setTypeName(rmdColorSetDto.getTypeName());
+        key.setStateName(rmdColorSetDto.getStateName());
+        if(rmdColorSetRepository.existsById(key))
         {
-            return false;
+            rmdColorSetRepository.deleteById(key);
         }
+        ReplyDto<RmdColorSetDto> reply = new ReplyDto<>();
+        reply.setSuccess(true);
+        reply.setData(rmdColorSetDto);
+        return reply;
     }
 }
