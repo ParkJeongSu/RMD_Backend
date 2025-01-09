@@ -1,5 +1,7 @@
 package com.jspark.rdmbackend.controller;
 
+import com.jspark.rdmbackend.dto.ReplyDto;
+import com.jspark.rdmbackend.entity.RmdFactory;
 import com.jspark.rdmbackend.service.FileStorageService;
 import com.jspark.rdmbackend.service.RmdFactoryService;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +20,20 @@ public class FileUploadController {
     }
 
     @PostMapping
-    public String uploadFile(@RequestParam("file") MultipartFile file) {
+    public ReplyDto<RmdFactory> uploadFile(@RequestParam("file") MultipartFile file) {
+        ReplyDto<RmdFactory> replyDto = new ReplyDto<RmdFactory>();
         try {
             String fileName = file.getOriginalFilename().substring(0, file.getOriginalFilename().lastIndexOf('.'));
-            rmdFactoryService.createRmdFactory(fileName);
+            RmdFactory rmdFactory = rmdFactoryService.createRmdFactory(fileName);
             String path = fileStorageService.storeFile(file);
-            return "File uploaded to: " + path;
+            replyDto.setSuccess(true);
+            replyDto.setData(rmdFactory);
         } catch (Exception e) {
-            return "Upload failed: " + e.getMessage();
+            replyDto.setSuccess(false);
+            replyDto.getError().setCode(e.getCause().toString());
+            replyDto.getError().setDetailMessage(e.getMessage());
         }
+
+        return replyDto;
     }
 }

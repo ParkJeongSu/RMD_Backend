@@ -7,7 +7,9 @@ import com.jspark.rdmbackend.repository.RmdFactoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RmdFactoryService {
@@ -23,9 +25,29 @@ public class RmdFactoryService {
     }
 
     public RmdFactory createRmdFactory(String factoryName) {
+        List<RmdFactory> rmdFactoryList = rmdFactoryRepository.findAll();
+        Optional<RmdFactory> maxPositionRmdFactory = rmdFactoryList.stream().max(Comparator.comparing(RmdFactory::getPosition));
+
         RmdFactory rmdFactory = new RmdFactory();
         rmdFactory.setFactoryName(factoryName);
         rmdFactory.setDefaultFactoryFlag("N");
+        maxPositionRmdFactory.ifPresentOrElse(
+                factory ->{
+                    try {
+                        Long position = Long.parseLong(factory.getPosition()) + 1;
+                        String positionAddOne = String.format("%03d",position);
+                        rmdFactory.setPosition(positionAddOne);
+                    }
+                    catch (Exception e)
+                    {
+                        rmdFactory.setPosition("001");
+                    }
+                },
+                ()->{
+                    rmdFactory.setPosition("001");
+                }
+        );
+
         return rmdFactoryRepository.save(rmdFactory);
     }
 
