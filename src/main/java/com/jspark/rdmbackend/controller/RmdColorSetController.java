@@ -30,7 +30,7 @@ public class RmdColorSetController {
 
     @PostMapping("/update")
     public ReplyDto<RmdColorSetDto> updatermdColorSet(@RequestBody RmdColorSetDto rmdFactorySetDto) {
-        return rmdColorSetService.deleteRmdFactory(rmdFactorySetDto);
+        return rmdColorSetService.updateRmdColorSet(rmdFactorySetDto);
     }
 
     @PostMapping("/create")
