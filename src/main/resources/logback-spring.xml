@@ -7,7 +7,7 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs/app.log</file>
+        <file>C:/Users/user/jeongsu/004.Data/logs/app.log</file>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
@@ -16,6 +16,7 @@
     <!-- 로그 레벨 설정 -->
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE" />
     </root>
 
     <!-- 특정 패키지에 대한 로그 레벨 조정 -->
