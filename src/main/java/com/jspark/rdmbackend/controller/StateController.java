@@ -49,21 +49,21 @@ public class StateController {
             {
                 test.setObjectName("A1machine" + String.valueOf(q));
                 test.setStateName("MachineState");
-                test.setStateValue(A1machine3 == true ? "Run" : "Down");
+                test.setStateValue(false == true ? "Run" : "Down");
                 A1machine3 = !A1machine3;
             }
             else if(i%3==0)
             {
                 test.setObjectName("T1machine" + String.valueOf(q));
                 test.setStateName("MachineState");
-                test.setStateValue(A1machine6 == true ? "Run" : "Down");
+                test.setStateValue(false == true ? "Run" : "Down");
                 A1machine6 = !A1machine6;
             }
             else if(i%5==0)
             {
                 test.setObjectName("E1machine"+ String.valueOf(q));
                 test.setStateName("MachineState");
-                test.setStateValue(T1machine1 == true ? "Run" : "Down");
+                test.setStateValue(false == true ? "Run" : "Down");
                 T1machine1 = !T1machine1;
             }
             else
